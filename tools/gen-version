@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+mkdir -p gen
+
+cat <<HERE > gen/Version.hs
+module Version where
+version    = "$(stack exec -- ghc --numeric-version)"
+targetOS   = "$(uname | tr [:upper:] [:lower:])"
+targetARCH = "$(uname -m)"
+HERE
+
+echo "Generated Version module to gen/Version.hs:"
+cat gen/Version.hs

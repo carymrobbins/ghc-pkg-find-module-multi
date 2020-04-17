@@ -1,0 +1,47 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 8056f9ca418d94db689cf0c8cfadea857a58566cfd888e61fc419bd789e57bba
+
+name:           ghc-pkg-find-module-multi
+version:        0.1.0.0
+synopsis:       Patched version of ghc-pkg which supports multiple modules for the find-module command.
+description:    Please see the README on GitHub at <https://github.com/githubuser/ghc-pkg-find-module-multi#readme>
+category:       Compiler
+homepage:       https://github.com/carymrobbins/ghc-pkg-find-module-multi#readme
+bug-reports:    https://github.com/carymrobbins/ghc-pkg-find-module-multi/issues
+author:         Cary Robbins
+maintainer:     carymrobbins@gmail.com
+copyright:      2020 Cary Robbins
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/carymrobbins/ghc-pkg-find-module-multi
+
+executable ghc-pkg-multi
+  main-is: Main.hs
+  other-modules:
+      Version
+      Paths_ghc_pkg_find_module_multi
+  hs-source-dirs:
+      ./src
+      ./gen
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Cabal
+    , base >=4.7 && <5
+    , containers
+    , directory
+    , filepath
+    , ghc
+    , ghc-boot
+    , unix
+  default-language: Haskell2010
