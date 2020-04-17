@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+global_pkg_db=$(stack path | grep '^global-pkg-db:' | sed 's/^global-pkg-db: //g')
+
+stack exec -- ghc-pkg-multi --global-package-db="$global_pkg_db" --simple-output find-module "$@"

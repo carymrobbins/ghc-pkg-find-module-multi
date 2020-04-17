@@ -1,3 +1,5 @@
+-- | Adapted from https://gitlab.haskell.org/ghc/ghc/-/blob/92b6a0237e0195cee4773de4b237951addd659d9/utils/ghc-pkg/Main.hs
+
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE LambdaCase #-}
@@ -472,9 +474,14 @@ runit verbosity cli nonopts = do
                                  (Just (Substring pkgarg_str m)) Nothing
     ["dot"] -> do
         showPackageDot verbosity cli
-    ["find-module", mod_name] -> do
-        let match = maybe (==mod_name) id (substringCheck mod_name)
-        listPackages verbosity cli Nothing (Just match)
+
+    "find-module" : mod_names -> do
+        F.for_ mod_names $ \mod_name -> do
+          hPutStr stdout $ "module:" ++ mod_name ++ ":"
+          let match = maybe (==mod_name) id (substringCheck mod_name)
+          listPackages verbosity cli Nothing (Just match)
+          hPutStrLn stdout ""
+
     ["latest", pkgid_str] -> do
         pkgid <- readGlobPkgId pkgid_str
         latestPackage verbosity cli pkgid
@@ -1596,7 +1603,7 @@ simplePackageList my_flags pkgs = do
                                                   else display
        strs = map showPkg $ map mungedId pkgs
    when (not (null pkgs)) $
-      hPutStrLn stdout $ concat $ intersperse " " strs
+      hPutStr stdout $ concat $ intersperse " " strs
 
 showPackageDot :: Verbosity -> [Flag] -> IO ()
 showPackageDot verbosity myflags = do
